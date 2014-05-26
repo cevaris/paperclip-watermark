@@ -22,6 +22,7 @@ module Paperclip
       @target_geometry  = Geometry.parse geometry
       @current_geometry = Geometry.from_file @file
       @convert_options  = options[:convert_options]
+      @transparancy     = options[:transparancy].nil? ? '0' : options[:transparancy]
       @whiny            = options[:whiny].nil? ? true : options[:whiny]
       @format           = options[:format]
       @watermark_path   = options[:watermark_path]
@@ -61,7 +62,7 @@ module Paperclip
 
       if watermark_path
         command = "composite"
-        params = %W[-gravity #{@position} #{watermark_path} #{tofile(dst)}]
+        params = %W[-dissolve #{@transparancy} -gravity #{@position} #{watermark_path} #{tofile(dst)}]
         params << tofile(dst)
         begin
           success = Paperclip.run(command, params.flatten.compact.collect{|e| "'#{e}'"}.join(" "))
