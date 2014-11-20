@@ -50,9 +50,12 @@ module Paperclip
         raise Paperclip::Errors::CommandNotFoundError, "There was an error resizing and cropping #{@basename}" if @whiny
       end
 
+      # If we have a frame image
       if watermark_path
-        command = "composite"
-        params = %W[-dissolve 30 -gravity #{@position} #{watermark_path} #{tofile(dst)}]
+        # Solution
+        # 'convert','-define jpeg:size=670x670 /tmp/rsz_frame.png /tmp/test.jpg -gravity center -compose DstOver -composite /tmp/example3.jpg'
+        command = "convert"
+        params = %W[#{watermark_path} -gravity center -compose DstOver #{tofile(dst)}]
         params << tofile(dst)
         begin
           success = Paperclip.run(command, params.flatten.compact.collect{|e| "'#{e}'"}.join(" "))
