@@ -59,7 +59,7 @@ module Paperclip
         # Command :: convert 'http://cdn.festpix-local.com.s3.amazonaws.com/events/watermarks/test2/medium/frame.png?1416499772' '-gravity' 'center' '-compose' 'DstOver' '/var/folders/4r/t68zb9zd3l36jp0954xgyyjr0000gn/T/4ba2592ac2d593d52137659160e2dacb20141120-17236-1hnux120141120-17236-13xgzhs' '/var/folders/4r/t68zb9zd3l36jp0954xgyyjr0000gn/T/4ba2592ac2d593d52137659160e2dacb20141120-17236-1hnux120141120-17236-13xgzhs'
         
         command = "convert"
-        params = %W[#{watermark_path} #{tofile(dst)} -gravity center -compose DstOver #{tofile(dst)}]
+        params = %W[#{watermark_path} #{tofile(dst)} -gravity center -compose DstOver -composite #{tofile(dst)}]
         params << tofile(dst)
         begin
           success = Paperclip.run(command, params.flatten.compact.collect{|e| "'#{e}'"}.join(" "))
